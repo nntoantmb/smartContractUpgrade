@@ -4,22 +4,23 @@ pragma solidity ^0.8.4;
 import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721URIStorageUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721RoyaltyUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 
 interface IWhileListUser {
     function isWhiteList(address user) external returns (bool);
 }
 
 
-contract NFTUpgradeable is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, ERC721URIStorageUpgradeable, OwnableUpgradeable, UUPSUpgradeable, ReentrancyGuardUpgradeable {
+contract NFTUpgradeable is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, ERC721URIStorageUpgradeable, OwnableUpgradeable, UUPSUpgradeable, ERC721RoyaltyUpgradeable {
     using CountersUpgradeable for CountersUpgradeable.Counter;
     CountersUpgradeable.Counter private _tokenIdCounter;
 
     address contractMarket;
+    uint96 feeNumerator;
     IWhileListUser public contractWhiteList;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
@@ -31,7 +32,7 @@ contract NFTUpgradeable is Initializable, ERC721Upgradeable, ERC721EnumerableUpg
         __ERC721URIStorage_init();
         __Ownable_init();
         __UUPSUpgradeable_init();
-        __ReentrancyGuard_init();
+        __ERC721Royalty_init();
     }
 
     // custom
@@ -56,6 +57,15 @@ contract NFTUpgradeable is Initializable, ERC721Upgradeable, ERC721EnumerableUpg
     }
 
     /** 
+        * set feeNumerator
+        * @param _feeNumerator: address of market
+    */
+    function setFeeNumerator(uint96 _feeNumerator) public {
+        feeNumerator = _feeNumerator;
+    }
+
+
+    /** 
         * create token nft
         * @param uris: token uri of tokenId
     */
@@ -66,6 +76,7 @@ contract NFTUpgradeable is Initializable, ERC721Upgradeable, ERC721EnumerableUpg
 
         _mint(msg.sender, newItemId);
         _setTokenURI(newItemId, uris);
+        _setTokenRoyalty(newItemId, msg.sender, feeNumerator);
         setApprovalForAll(contractMarket, true);
         return newItemId;
     }
@@ -89,7 +100,7 @@ contract NFTUpgradeable is Initializable, ERC721Upgradeable, ERC721EnumerableUpg
     function _burn(uint256 tokenId)
         internal
         virtual
-        override(ERC721Upgradeable, ERC721URIStorageUpgradeable)
+        override(ERC721Upgradeable, ERC721URIStorageUpgradeable, ERC721RoyaltyUpgradeable)
     {
         super._burn(tokenId);
     }
@@ -107,7 +118,7 @@ contract NFTUpgradeable is Initializable, ERC721Upgradeable, ERC721EnumerableUpg
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(ERC721Upgradeable, ERC721EnumerableUpgradeable)
+        override(ERC721Upgradeable, ERC721EnumerableUpgradeable, ERC721RoyaltyUpgradeable)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
