@@ -1,14 +1,14 @@
 # deploy smart cotnract
 
 ```
-yarn hardhat run scripts/deployProxy.js --network bsctest
+yarn hardhat run scripts/deploySmartcontract.ts --network bsctest
 npx hardhat verify --network bsctest 0xC201cCd970CbBd537C228fe5fDfD5fbC8Eff99A5
-yarn hardhat run scripts/upgradeProxy.js --network bsctest
 ```
 
-Implementation upgraded:  0xC201cCd970CbBd537C228fe5fDfD5fbC8Eff99A5
-new implementation address:  0x1409565126527460336C359c9734415eAC7b7528
-
-UpgradeableNFT (PROXY)  deployed to: 0x58538C3B09c8084c118902aD84fd6A058BE32A5E
-getImplementationAddress: 0xe4e8e03d44Fc3e277C5Ecd109292aF024cf6299e
+proxyNFTUpgradeable  0xE7526889D1439A2975f0811559b121f4641B4514
+implementationproxyNFTUpgradeable code  0x0346bA6F986A8F79a28764560A288E7eb9CCc022
+proxyNFTUpgradeable  0x0E01c0FE62d902258b31a9c31eC74d65dbcb6729
+implementationproxyNFTUpgradeable code  0x0d949410D51Aab722816f4781D56977Eb245e346
+proxyNFTUpgradeable  0x8e3D9ead51C70De89eBD909C653E7493a8DB7F25
+implementationproxyNFTUpgradeable code  0x0346bA6F986A8F79a28764560A288E7eb9CCc022
 
