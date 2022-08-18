@@ -46,10 +46,10 @@ async function main() {
 
   console.log("proxyNFTUpgradeable ", proxyNFTUpgradeable.address)
   console.log("implementationproxyNFTUpgradeable code ", implementationproxyNFTUpgradeable)
-  console.log("proxyNFTUpgradeable ", proxyMarketUpgradeable.address)
-  console.log("implementationproxyNFTUpgradeable code ", implementationproxyMarketUpgradeable)
-  console.log("proxyNFTUpgradeable ", proxyWhiteListUpgradeable.address)
-  console.log("implementationproxyNFTUpgradeable code ", implementationproxyWhiteListUpgradeable)
+  console.log("proxyMarketUpgradeable ", proxyMarketUpgradeable.address)
+  console.log("implementationproxyMarketUpgradeable code ", implementationproxyMarketUpgradeable)
+  console.log("proxyWhiteListUpgradeable ", proxyWhiteListUpgradeable.address)
+  console.log("implementationproxyWhiteListUpgradeable code ", implementationproxyWhiteListUpgradeable)
 }
 
 main()
